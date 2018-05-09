@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>TouDou</title>
+	<link rel="stylesheet" type="text/css" href="/static/admin/layui/css/layui.css" />
+	<link rel="stylesheet" type="text/css" href="/static/admin/css/login.css" />
+</head>
+
+<body>
+	<div class="m-login-bg">
+		<div class="m-login">
+			<h3>后台系统登录</h3>
+			<div class="m-login-warp">
+				<form class="layui-form">
+					<div class="layui-form-item">
+						<input type="text" name="userName" lay-verify="required" placeholder="用户名" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-form-item">
+						<input type="password" name="password" lay-verify="required"  placeholder="密码" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-form-item layui-hide" id="verityFormItem">
+						<div class="layui-inline">
+							<input type="text" name="verity" placeholder="验证码" autocomplete="off" class="layui-input">
+						</div>
+						<div class="layui-inline">
+							<img class="verifyImg" id="verifyCode" />
+						</div>
+					</div>
+					<div class="layui-form-item m-login-btn">
+						<div class="layui-inline">
+							<button class="layui-btn layui-btn-normal" lay-submit lay-filter="login">登录</button>
+						</div>
+						<div class="layui-inline">
+							<a class="layui-btn" style="width:100%" href="/registe.html">注册</a>
+						</div>
+					</div>
+				</form>
+			</div>
+			<p class="copyright">Copyright 2018-2018 by YOUZ</p>
+		</div>
+	</div>
+	<script src="/static/admin/layui/layui.js" ></script>
+	<script src="/static/admin/js/tudou_config.js" ></script>
+	<script>
+		layui.use(['form', 'layedit', 'laydate', 'tudou'], function () {
+			var form = layui.form(),
+				$ = layui.jquery,
+				layer = layui.layer,
+				tudou = layui.tudou;
+
+			//监听提交
+			form.on('submit(login)', function (data) {
+				tudou.login(data.field,function(msg){
+					tudou.error(msg)
+					if($("#verityFormItem").hasClass("layui-hide")){
+						$("#verityFormItem").removeClass("layui-hide");
+					}
+					$("#verifyCode").trigger("click");
+				})
+				return false;
+			});
+
+			$("#verifyCode").on('click', function () {
+				tudou.getValidateCode(this);
+			})
+			//第一次进入刷新验证码
+			$("#verifyCode").trigger("click");
+
+		});
+
+
+	</script>
+</body>
+
+</html>
